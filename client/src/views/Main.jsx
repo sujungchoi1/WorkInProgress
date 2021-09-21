@@ -1,40 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from '@reach/router'
 import axios from 'axios';
+import {Button} from 'semantic-ui-react';
 
 // eslint-disable-next-line
 export default () => {
-    const [ authors, setAuthors ] = useState([]);
-    const [names, setNames] = useState([]);
+    const [ projects, setProjects ] = useState([]);
+    // const [names, setNames] = useState([]);
 
     useEffect(()=>{
-        axios.get("http://localhost:8001/api/authors")
+        axios.get("http://localhost:8000/api/projects")
             // .then(res=>setProducts(res.data.products)) if res.json({products: allProducts}) instead of getting it as an array from controller
             .then(res=>{
-                setAuthors(res.data)
+                setProjects(res.data)
             })  
             .catch(err=>console.log("Error: ", err))     
     }, [])
 
-    const deleteAuthor = (authorId) => {
-        axios.delete('http://localhost:8001/api/authors/' + authorId)
+    const deleteProject = (projectId) => {
+        axios.delete('http://localhost:8000/api/projects/' + projectId)
             .then(res => {
-                setAuthors(authors.filter(auth => auth._id !== authorId));
+                setProjects(projects.filter(auth => auth._id !== projectId));
             })
             .catch(err=>console.log("Error: ", err))     
     }
 
     ////// CHECKBOX ///////
-    const updateAuthor = (changedAuthor, id) => {
-        setAuthors(authors.map(author => ( author._id === id ? changedAuthor : author)
+    const updateProject = (changedProject, id) => {
+        setProjects(projects.map(project => ( project._id === id ? changedProject : project)
         ));
       }
 
     const updateAPI = (data, id) => {
-        axios.put(`http://localhost:8001/api/authors/edit/${id}`, data)
+        axios.put(`http://localhost:8000/api/projects/${id}`, data)
         .then(res => {
             console.log(res.data)
-            updateAuthor(res.data, id);
+            updateProject(res.data, id);
         })
         .catch(err=>console.log(err.response));
     }
@@ -47,35 +48,36 @@ export default () => {
     return (
 
         <div className="mainPage">
-            <h1>Favorite Authors</h1>
-
-            <h4><Link to='/new'> Add an author! </Link></h4>
+            {/* <Nav /> */}
+            <h1>Work in Progress</h1>
+            <Button basic color='blue'>BUTTON</Button>
+            <h4><Link to='/new'> Add an project! </Link></h4>
             <h5>We have quotes by:</h5>
 
             <table className="table table-bordered">
                 <thead>
                     <tr>
-                    <th className="firstColumn" scope="col">Author</th>
+                    <th className="firstColumn" scope="col">project</th>
                     <th className="secondColumn" scope="col">Options available</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    {authors.map((value, idx)=>{
+                    {projects.map((value, idx)=>{
                     return <tr key={idx}>
-                            <td className="authorName" key={idx}> 
+                            <td className="projectName" key={idx}> 
                                <Link to={`/detail/${value._id}` }>{value.name}</Link>
                             </td>
                             <td>
-                                <button type="button" className="btn btn-outline-success">
+                                <Button type="button" basic color="green">
                                 <Link to={`/edit/${value._id}`}>
                                 <span style={{"color": "green"}}>Edit</span>
                                 </Link> 
 
-                                </button>
+                                </Button>
                                 
-                                <button onClick={(e)=>{deleteAuthor(value._id)}} 
-                                type="button" className="btn btn-outline-warning">Delete</button>
+                                <Button onClick={(e)=>{deleteProject(value._id)}} 
+                                type="button" basic color="orange">Delete</Button>
 
                                 <input 
                                 type="checkbox" 

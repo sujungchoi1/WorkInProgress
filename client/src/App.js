@@ -1,4 +1,3 @@
-import React from 'react';
 import { Router } from '@reach/router';
 import Main from './views/Main';
 import Create from './views/Create';
@@ -6,6 +5,7 @@ import Update from './views/Update';
 import Error from './views/Error';
 import Detail from './views/Detail';
 import './App.css'
+import 'semantic-ui-css/semantic.min.css'
 
 function App() {
   return (

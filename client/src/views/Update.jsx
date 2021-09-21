@@ -1,19 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import { Link, navigate } from '@reach/router';
 import axios from 'axios';
-import AuthorForm from '../components/AuthorForm';
+import ProjectForm from '../components/ProjectForm';
 
 // eslint-disable-next-line
 export default (props) => {
 
-    const [author, setAuthor] = useState(); 
+    const [project, setProject] = useState(); 
     const [loaded, setLoaded] = useState(false);
     const [errors, setErrors] = useState([]); 
 
     useEffect(() => {
-        axios.get(`http://localhost:8001/api/authors/${props.id}` )
+        axios.get(`http://localhost:8000/api/projects/${props.id}` )
             .then(res => {
-                setAuthor(res.data);
+                setProject(res.data);
                 setLoaded(true);
             })
             .catch(err=> {
@@ -22,8 +22,8 @@ export default (props) => {
             })
     }, [])
 
-    const updateAuthor = author => {
-        axios.put(`http://localhost:8001/api/authors/edit/${props.id}`, author)
+    const updateProject = project => {
+        axios.put(`http://localhost:8000/api/projects/${props.id}`, project)
             .then(res => {
                 console.log(res)
                 // navigate to the main page after updating the form
@@ -45,16 +45,21 @@ export default (props) => {
     <div className="updatePage">
 
 {errors.map((err, index) => <p style={{"color": "red"}} key={index}> {err} </p>)}
-      <h1>Favorite Authors</h1>
+      <h1>Favorite projects</h1>
       <h5><Link to='/'> Home </Link></h5>
-      <h4 style={{"color": "rgb(107, 106, 106)"}}>Edit this author:</h4>
+      <h4 style={{"color": "rgb(107, 106, 106)"}}>Edit this project:</h4>
 
         {loaded && (
-        <AuthorForm 
-            onSubmitProp={updateAuthor}
-            initialName={author.name}
-            initialGenre={author.genre}
-            initialDesc={author.desc}
+        <ProjectForm 
+            onSubmitProp={updateProject}
+            initialName={project.name}
+            initialGenre={project.genre}
+            initialDesc={project.desc}
+            initialImageURL={project.imageURL}
+            initialPatternLocation={project.patternLocation}
+            initialDescription={project.description} 
+            initialHookSize={project.hookSize} 
+            initialYarnInfo={project.yarnInfo}
         />)}
       
 
